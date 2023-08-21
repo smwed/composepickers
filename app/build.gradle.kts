@@ -7,7 +7,7 @@ plugins {
 android {
     defaultConfig {
 
-        applicationId = "ru.smwed.composematerialdialogs"
+        applicationId = "ru.smwed.composepickers"
         minSdk = 23
         targetSdk = 33
         compileSdk = 33
@@ -37,17 +37,13 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = Dependencies.AndroidX.Compose.compilerVersion
     }
-    namespace = "ru.smwed.composematerialdialogdemos"
+    namespace = "ru.smwed.composepickersdemos"
 }
 
 dependencies {
     implementation(project(":core"))
     implementation(project(":datetime"))
     implementation(project(":color"))
-
-//    implementation(Dependencies.ComposeMaterialDialogs.core)
-//    implementation(Dependencies.ComposeMaterialDialogs.datetime)
-//    implementation(Dependencies.ComposeMaterialDialogs.color)
 
     implementation(Dependencies.Google.material)
     implementation(Dependencies.AndroidX.coreKtx)

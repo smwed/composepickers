@@ -1,4 +1,4 @@
-rootProject.name = "compose-material-dialogs"
+rootProject.name = "composepickers"
 include ':app'
 include ':core'
 include ':color'

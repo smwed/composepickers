@@ -50,7 +50,7 @@ android {
             "-Xopt-in=com.google.accompanist.pager.ExperimentalPagerApi"
         )
     }
-    namespace = "ru.smwed.composematerialdialogs.datetime"
+    namespace = "ru.smwed.composepickers.datetime"
 }
 
 dependencies {

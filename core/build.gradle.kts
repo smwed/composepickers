@@ -44,7 +44,7 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = Dependencies.AndroidX.Compose.compilerVersion
     }
-    namespace = "ru.smwed.composematerialdialogs"
+    namespace = "ru.smwed.composepickers"
 }
 
 //dependencies {

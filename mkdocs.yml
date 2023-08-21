@@ -1,13 +1,13 @@
 site_name: 'Compose Material Dialogs'
 site_description: 'A Material Dialog Builder for Jetpack Compose'
 site_author: 'Pranav Maganti'
-site_url: 'https://smwed.github.io/compose-material-dialogs/'
+site_url: 'https://smwed.github.io/composepickers/'
 remote_branch: gh-pages
 
 docs_dir: docs
 
-repo_name: 'compose-material-dialogs'
-repo_url: 'https://github.com/smwed/compose-material-dialogs'
+repo_name: 'composepickers'
+repo_url: 'https://github.com/smwed/composepickers'
 
 nav:
   - 'Overview': index.md

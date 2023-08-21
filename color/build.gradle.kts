@@ -41,7 +41,7 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = Dependencies.AndroidX.Compose.compilerVersion
     }
-    namespace = "ru.smwedcomposematerialdialogs.color"
+    namespace = "ru.smwedcomposepickers.color"
 }
 
 dependencies {
