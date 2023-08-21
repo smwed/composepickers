@@ -3,7 +3,6 @@ package ru.smwed.composepickers.datetime.date
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -67,8 +66,9 @@ import java.util.Locale
 /**
  * @brief A date picker body layout
  *
- * @param initialDate time to be shown to the user when the dialog is first shown.
+ * @param initialDate date to be shown to the user when the dialog is first shown.
  * Defaults to the current date if this is not set
+ * @param today date to be circled when the dialog is shown.
  * @param yearRange the range of years the user should be allowed to pick from
  * @param waitForPositiveButton if true the [onDateChange] callback will only be called when the
  * positive button is pressed, otherwise it will be called on every input change
@@ -152,7 +152,7 @@ internal fun DatePickerImpl(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalPagerApi::class)
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 private fun YearPicker(
     viewDate: LocalDate,
@@ -240,7 +240,7 @@ private fun CalendarViewHeader(
                 .clickable(onClick = { state.yearPickerShowing = !state.yearPickerShowing })
         ) {
             Text(
-                "$month ${viewDate.year}",
+                text = "${viewDate.year}",
                 modifier = Modifier
                     .paddingFromBaseline(top = 16.dp)
                     .wrapContentSize(Alignment.Center),
@@ -258,51 +258,61 @@ private fun CalendarViewHeader(
             }
         }
 
-        Row(
-            Modifier
-                .fillMaxHeight()
-                .align(Alignment.CenterEnd)
-        ) {
-            Icon(
-                Icons.Default.KeyboardArrowLeft,
-                contentDescription = "Previous Month",
-                modifier = Modifier
-                    .size(24.dp)
-                    .clickable(onClick = {
-                        coroutineScope.launch {
-                            if (pagerState.currentPage - 1 >= 0) {
-                                pagerState.animateScrollToPage(
-                                    pagerState.currentPage - 1
-                                )
-                            }
-                        }
-                    }),
-                tint = state.colors.calendarHeaderTextColor
-            )
+        if (!state.yearPickerShowing) {
+            Row(
+                Modifier
+                    .fillMaxHeight()
+                    .align(Alignment.CenterEnd)
 
-            Spacer(modifier = Modifier.width(24.dp))
-
-            Icon(
-                Icons.Default.KeyboardArrowRight,
-                contentDescription = "Next Month",
-                modifier = Modifier
-                    .size(24.dp)
-                    .clickable(onClick = {
-                        coroutineScope.launch {
-                            if (pagerState.currentPage + 1 < pagerState.pageCount) {
-                                pagerState.animateScrollToPage(
-                                    pagerState.currentPage + 1
-                                )
+            ) {
+                Icon(
+                    Icons.Default.KeyboardArrowLeft,
+                    contentDescription = "Previous Month",
+                    modifier = Modifier
+                        .size(24.dp)
+                        .clickable(onClick = {
+                            coroutineScope.launch {
+                                if (pagerState.currentPage - 1 >= 0) {
+                                    pagerState.animateScrollToPage(
+                                        pagerState.currentPage - 1
+                                    )
+                                }
                             }
-                        }
-                    }),
-                tint = state.colors.calendarHeaderTextColor
-            )
+                        }),
+                    tint = state.colors.calendarHeaderTextColor
+                )
+
+                //Spacer(modifier = Modifier.width(24.dp))
+                Text(
+                    text = "$month",
+                    modifier = Modifier
+                        .paddingFromBaseline(top = 16.dp)
+                        .wrapContentSize(Alignment.Center),
+                    style = TextStyle(fontSize = 14.sp, fontWeight = W600),
+                    color = state.colors.calendarHeaderTextColor
+                )
+
+                Icon(
+                    Icons.Default.KeyboardArrowRight,
+                    contentDescription = "Next Month",
+                    modifier = Modifier
+                        .size(24.dp)
+                        .clickable(onClick = {
+                            coroutineScope.launch {
+                                if (pagerState.currentPage + 1 < pagerState.pageCount) {
+                                    pagerState.animateScrollToPage(
+                                        pagerState.currentPage + 1
+                                    )
+                                }
+                            }
+                        }),
+                    tint = state.colors.calendarHeaderTextColor
+                )
+            }
         }
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun CalendarView(
     viewDate: LocalDate,
@@ -354,7 +364,6 @@ private fun DateSelectionBox(
         Modifier
             .size(40.dp)
             .clip(CircleShape)
-
             .clickable(
                 interactionSource = MutableInteractionSource(),
                 onClick = { if (enabled) onClick() },
@@ -381,7 +390,6 @@ private fun DateSelectionBox(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun DayOfWeekHeader(state: DatePickerState, locale: Locale) {
     val dayHeaders = WeekFields.of(locale).firstDayOfWeek.let { firstDayOfWeek ->

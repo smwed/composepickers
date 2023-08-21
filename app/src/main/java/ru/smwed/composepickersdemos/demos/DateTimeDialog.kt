@@ -9,6 +9,7 @@ import androidx.compose.ui.platform.LocalContext
 import ru.smwed.composepickers.MaterialDialogButtons
 import ru.smwed.composepickers.datetime.date.DatePickerDefaults
 import ru.smwed.composepickers.datetime.date.datepicker
+import ru.smwed.composepickers.datetime.month.monthpicker
 import ru.smwed.composepickers.datetime.time.TimePickerColors
 import ru.smwed.composepickers.datetime.time.TimePickerDefaults
 import ru.smwed.composepickers.datetime.time.timepicker
@@ -108,6 +109,18 @@ fun DateTimeDialogDemo() {
             println(it.toString())
         }
     }
+
+    DialogAndShowButton(
+        buttonText = "Month Picker Dialog",
+        buttons = { defaultDateTimeDialogButtons() }
+    ) {
+        monthpicker(allowedDateValidator = {
+            it.monthValue != 1
+        }) {
+            println(it.toString())
+        }
+    }
+
 }
 
 @Composable
