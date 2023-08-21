@@ -58,7 +58,6 @@ import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.launch
 import ru.smwed.composematerialdialogs.MaterialDialogScope
 import ru.smwed.composematerialdialogs.datetime.R
-import ru.smwed.composematerialdialogs.datetime.util.getFullLocalName
 import ru.smwed.composematerialdialogs.datetime.util.getShortLocalName
 import ru.smwed.composematerialdialogs.datetime.util.isSmallDevice
 import java.time.LocalDate
@@ -224,7 +223,7 @@ private fun CalendarViewHeader(
     locale: Locale
 ) {
     val coroutineScope = rememberCoroutineScope()
-    val month = remember { viewDate.month.getFullLocalName(locale) }
+    val month = remember { viewDate.month.getShortLocalName(locale) }
     val arrowDropUp = painterResource(id = R.drawable.baseline_arrow_drop_up_24)
     val arrowDropDown = painterResource(id = R.drawable.baseline_arrow_drop_down_24)
 
@@ -442,7 +441,7 @@ private fun CalendarHeader(title: String, state: DatePickerState, locale: Locale
                     .paddingFromBaseline(top = if (isSmallDevice()) 0.dp else 64.dp)
             ) {
                 Text(
-                    text = "$day, $month ${state.selected.dayOfMonth}",
+                    text = "${state.selected.dayOfMonth} $month, $day",
                     modifier = Modifier.align(Alignment.CenterStart),
                     color = state.colors.headerTextColor,
                     style = TextStyle(fontSize = 30.sp, fontWeight = W400)
@@ -461,12 +460,4 @@ private fun getDates(date: LocalDate, locale: Locale): Pair<Int, Int> {
     val firstDay = date.withDayOfMonth(1).dayOfWeek.value - firstDayOfWeek % 7
 
     return Pair(firstDay, numDays)
-}
-
-internal fun <T : Any?> Modifier.withNotNull(obj: T, callback: Modifier.(T & Any) -> Modifier): Modifier {
-    return if (obj == null) {
-        this
-    } else {
-        callback(obj)
-    }
 }

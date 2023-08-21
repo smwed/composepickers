@@ -28,9 +28,6 @@ internal val LocalTime.simpleHour: Int
 internal fun Month.getShortLocalName(locale: Locale): String =
     this.getDisplayName(java.time.format.TextStyle.SHORT, locale)
 
-internal fun Month.getFullLocalName(locale: Locale) =
-    this.getDisplayName(java.time.format.TextStyle.FULL_STANDALONE, locale)
-
 internal fun DayOfWeek.getShortLocalName(locale: Locale) =
     this.getDisplayName(java.time.format.TextStyle.SHORT, locale)
 
