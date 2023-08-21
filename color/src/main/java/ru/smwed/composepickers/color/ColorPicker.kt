@@ -262,7 +262,6 @@ private fun SliderLayout(selectedColor: MutableState<Color>, showAlpha: Boolean)
     if (showAlpha) {
         LabelSlider(
             modifier = Modifier.padding(top = 16.dp),
-            sliderTestTag = "dialog_color_picker_alpha_slider",
             label = "A",
             value = selectedColor.value.alpha * 255,
             sliderColor = Color.DarkGray
@@ -273,7 +272,6 @@ private fun SliderLayout(selectedColor: MutableState<Color>, showAlpha: Boolean)
 
     LabelSlider(
         modifier = Modifier.padding(top = 16.dp),
-        sliderTestTag = "dialog_color_picker_red_slider",
         label = "R",
         value = selectedColor.value.red * 255,
         sliderColor = Color.Red
@@ -283,7 +281,6 @@ private fun SliderLayout(selectedColor: MutableState<Color>, showAlpha: Boolean)
 
     LabelSlider(
         modifier = Modifier.padding(top = 16.dp),
-        sliderTestTag = "dialog_color_picker_green_slider",
         label = "G",
         value = selectedColor.value.green * 255,
         sliderColor = Color.Green
@@ -293,7 +290,6 @@ private fun SliderLayout(selectedColor: MutableState<Color>, showAlpha: Boolean)
 
     LabelSlider(
         modifier = Modifier.padding(top = 16.dp),
-        sliderTestTag = "dialog_color_picker_blue_slider",
         label = "B",
         value = selectedColor.value.blue * 255,
         sliderColor = Color.Blue
@@ -308,7 +304,6 @@ private fun LabelSlider(
     label: String,
     value: Float,
     sliderColor: Color,
-    sliderTestTag: String,
     onSliderChange: (Float) -> Unit
 ) {
     BoxWithConstraints {

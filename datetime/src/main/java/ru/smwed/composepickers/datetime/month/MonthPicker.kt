@@ -31,7 +31,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -44,9 +43,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.PagerState
-import com.google.accompanist.pager.rememberPagerState
-import kotlinx.coroutines.launch
 import ru.smwed.composepickers.MaterialDialogScope
 import ru.smwed.composepickers.datetime.R
 import ru.smwed.composepickers.datetime.date.DatePickerColors
@@ -106,13 +102,10 @@ internal fun MonthPickerImpl(
     allowedDateValidator: (LocalDate) -> Boolean,
     locale: Locale
 ) {
-    val pagerState = rememberPagerState(
-        initialPage = (state.selected.year - state.yearRange.first) * 12 + state.selected.monthValue - 1
-    )
 
     Column(Modifier.fillMaxWidth()) {
         CalendarHeader(title, state)
-        val viewDate = remember { LocalDate.of(state.selected.year, state.selected.month, 1) }
+        val viewDate = remember(state.selected) { LocalDate.of(state.selected.year, state.selected.month, 1) }
 
         Column {
             CalendarViewHeader(viewDate, state)
@@ -126,7 +119,7 @@ internal fun MonthPickerImpl(
                     enter = slideInVertically(initialOffsetY = { -it }),
                     exit = slideOutVertically(targetOffsetY = { -it })
                 ) {
-                    YearPicker(viewDate, state, pagerState)
+                    YearPicker(viewDate, state)
                 }
 
                 MonthPicker(viewDate, state, allowedDateValidator, locale)
@@ -135,31 +128,22 @@ internal fun MonthPickerImpl(
     }
 }
 
-@OptIn(ExperimentalPagerApi::class)
 @Composable
 private fun YearPicker(
     viewDate: LocalDate,
     state: DatePickerState,
-    pagerState: PagerState
 ) {
     val gridState = rememberLazyGridState(viewDate.year - state.yearRange.first)
-    val coroutineScope = rememberCoroutineScope()
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
         state = gridState,
         modifier = Modifier.background(state.dialogBackground)
     ) {
-        itemsIndexed(state.yearRange.toList()) { _, item ->
-            val selected = remember { item == viewDate.year }
-            YearPickerItem(year = item, selected = selected, colors = state.colors) {
-                if (!selected) {
-                    coroutineScope.launch {
-                        pagerState.scrollToPage(
-                            pagerState.currentPage + (item - viewDate.year) * 12
-                        )
-                    }
-                }
+        itemsIndexed(state.yearRange.toList()) { _, yearNum ->
+            val selected = remember { yearNum == viewDate.year }
+            YearPickerItem(year = yearNum, selected = selected, colors = state.colors) {
+                state.selected = state.selected.withYear(yearNum)
                 state.yearPickerShowing = false
             }
         }
